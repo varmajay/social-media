@@ -8,7 +8,7 @@ from myapp.forms import *
 from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
-
+from django.urls import reverse
 
 
 # Create your views here.
@@ -212,8 +212,32 @@ def view_profile(request,pk):
     followers = len(Follower.objects.filter(user=pk))
     following = len(Follower.objects.filter(follower=pk))
 
+    # if request.method == 'POST':
+    #     user = request.POST['user']
+    #     follower = request.POST['follower']
+    #     uid_user = User.objects.get(id = request.POST['user'])
+    #     uid_follower = User.objects.get(id = request.POST['follower'])
+    #     # print(uid_follower.id)
+    #     # print(uid_user.id)
+
+
+    #     if Follower.objects.filter(user__id = user, follower__id = follower).first():
+    #         delete_follower = Follower.objects.get(user__id = user, follower__id = follower)
+    #         delete_follower.delete()
+    #         return render(request,'view-profile.html',{'post':post,'user':user,'button_text':button_text,'followers':followers,'following':following})
+    #     else:
+    #         new_follower = Follower.objects.create(user = uid_user, follower = uid_follower)
+    #         new_follower.save()
+    #         return render(request,'view-profile.html',{'post':post,'user':user,'button_text':button_text,'followers':followers,'following':following}))
+
+    return render(request,'view-profile.html',{'post':post,'user':user,'button_text':button_text,'followers':followers,'following':following})
+
+
+
+
+def follow(request):
     if request.method == 'POST':
-        user = request.POST['user']
+        user = request.POST['user']  
         follower = request.POST['follower']
         uid_user = User.objects.get(id = request.POST['user'])
         uid_follower = User.objects.get(id = request.POST['follower'])
@@ -224,37 +248,13 @@ def view_profile(request,pk):
         if Follower.objects.filter(user__id = user, follower__id = follower).first():
             delete_follower = Follower.objects.get(user__id = user, follower__id = follower)
             delete_follower.delete()
-            return render(request,'view-profile.html',{'post':post,'user':user,'button_text':button_text,'followers':followers,'following':following})
+            return redirect('/view-profile/'+user)
         else:
             new_follower = Follower.objects.create(user = uid_user, follower = uid_follower)
             new_follower.save()
-            return render(request,'view-profile.html',{'post':post,'user':user,'button_text':button_text,'followers':followers,'following':following})
-
-    return render(request,'view-profile.html',{'post':post,'user':user,'button_text':button_text,'followers':followers,'following':following})
-
-
-
-
-# def follow(request):
-#     if request.method == 'POST':
-#         user = request.POST['user']  
-#         follower = request.POST['follower']
-#         uid_user = User.objects.get(id = request.POST['user'])
-#         uid_follower = User.objects.get(id = request.POST['follower'])
-#         # print(uid_follower.id)
-#         # print(uid_user.id)
-
-
-#         if Follower.objects.filter(user__id = user, follower__id = follower).first():
-#             delete_follower = Follower.objects.get(user__id = user, follower__id = follower)
-#             delete_follower.delete()
-#             return redirect('view-profile/'+user)
-#         else:
-#             new_follower = Follower.objects.create(user = uid_user, follower = uid_follower)
-#             new_follower.save()
-#             return redirect('view-profile/'+user)
-#     else:
-#         return redirect('view-profile/')    
+            return redirect('/view-profile/'+user)
+    else:
+        return redirect('view-profile/')    
 
 
 

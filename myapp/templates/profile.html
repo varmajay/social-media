@@ -79,10 +79,10 @@
                                                         <img src="{% static 'front/images/liked-img.png'%}" alt="">
                                                         <span>{{data.likes}}</span>
                                                     </li>
-                                                    <li><a href="#" class="com"><i class="fas fa-comment-alt"></i>
+                                                    <li><a href="" class="com"><i class="fas fa-comment-alt"></i>
                                                             Comment 15</a></li>
                                                 </ul>
-                                                <a href="#"><i class="fas fa-eye"></i>Views 50</a>
+                                                <a href="{% url 'view-comment' data.id %}"><i class="fas fa-eye"></i>Views comment</a>
                                             </div>
                                         </div>
                                         {% endfor %}

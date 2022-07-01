@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from .import views
+from django.urls import reverse
+
 
 urlpatterns = [
     path('index/',views.index,name='index'),
@@ -15,7 +17,7 @@ urlpatterns = [
     path('edit-post/<int:pk>',views.edit_post,name='edit-post'),
     path('delete-post/<int:pk>',views.delete_post,name='delete-post'),
     path('view-profile/<int:pk>',views.view_profile,name='view-profile'),
-    # path('follow/',views.follow,name='follow'),
+    path('follow/',views.follow,name='follow'),
     path('like-post-profile', views.like_post_profile, name='like-post-profile'),
     path('like-post', views.like_post, name='like-post'),
     path('comment/<int:pk>',views.comment, name='comment'),
