@@ -1,0 +1,164 @@
+{% extends 'header.html'%}
+{% load static %}
+{% block content %}
+<main>
+    <div class="main-section">
+        <div class="container">
+            <div class="main-section-data">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 pd-left-none no-pd">
+                        <div class="main-left-sidebar no-margin">
+                            <div class="user-data full-width">
+                                <div class="user-profile">
+                                    <div class="username-dt">
+                                        <div class="usr-pic">
+                                            <img src="{{request.user.profile.url}}" alt="" style="border-radius: 50%; height: 120px; width: 120px;">
+                                        </div>
+                                    </div>
+                                    <div class="user-specs">
+                                        <h3>{{request.user.name}}</h3>
+                                        <span>{{request.user.bio}}</span>
+                                    </div>
+                                </div>
+                                <ul class="user-fw-status">
+                                    <li>
+                                        <h4>Following</h4>
+                                        <span>{{following}}</span>
+                                    </li>
+                                    <li>
+                                        <h4>Followers</h4>
+                                        <span>{{followers}}</span>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'profile'%}" title="">View Profile</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-8 no-pd">
+                        <div class="main-ws-sec">
+                            <div class="post-topbar">
+                                <div class="user-picy">
+                                    <img src="{{request.user.profile.url}}" alt="" style="border-radius: 50%; height: 50px; width: 50px;">
+                                </div>
+                                <div class="post-st">
+                                    <ul>
+                                        <li><a class="post-jb active" href="#" title="">Post</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="posts-section scroll" >
+                                {% for data in post %}
+                                    <div class="post-bar">
+                                        <div class="post_topbar">
+                                            <div class="usy-dt">
+                                                <img src="{{data.user.profile.url}}" alt="" style="height: 50px; width: 50px;">
+                                                <div class="usy-name">
+                                                    <h3>{{data.user.name}}</h3>
+                                                    <span><img src="{% static 'front/images/clock.png'%}" alt="">{{data.created_at}}</span>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                       
+                                        <div class="job_descp">
+                                            <h3>{{data.caption}}</h3>
+                                            <img src="{{data.image.url}}" alt="" style="height: 350px; width: 350px;">
+                                        </div>
+                                        <div class="job-status-bar">
+                                            <ul class="like-com">
+                                                <li>
+                                                    <a href="/like-post?post_id={{data.id}}"><i class="fas fa-heart" style="color: orangered;"></i> Like</a>
+                                                    <img src="{% static 'front/images/liked-img.png'%}" alt="">
+                                                    <span>{{data.likes}}</span>
+                                                </li>
+                                                
+                                                <li><a href="" data-toggle="modal" data-target="#id{{data.id}}" class="com"><i class="fas fa-comment-alt"></i>
+                                                        Comment </a>
+                                                <!-- //Bootstrap modal -->
+                                                <div class="modal" id="id{{data.id}}">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                            <h4 class="modal-title">Comment</h4>
+                                                            </div>
+                                                        <div class="modal-body">
+                                                            <form action="{% url 'comment' data.id %}" method="post">
+                                                                {% csrf_token %}
+                                                                <div class="mb-3">
+                                                                <input type="text" class="form-control" id="recipient-name" name="comment">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button"  data-dismiss="modal" >Close</button>
+                                                                <button type="submit">Comment</button>
+                                                            </div>
+                                                        </form>
+                                                        </div>
+                                                </div>
+                                                </div>
+                                                </li>
+                                            </ul>
+                                            <a href="{% url 'view-comment' data.id %}"><i class="fas fa-eye"></i>Views 50</a>
+                                        </div>
+                                    </div>
+
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 pd-right-none no-pd">
+                        <div class="right-sidebar">
+                            <div class="top-profiles">
+                                <div class="pf-hd">
+                                    <h3>Suggestion</h3>
+                                    <i class="la la-ellipsis-v"></i>
+                                </div>
+                                <div class="profiles-slider">
+                                    {% for data in user %}
+                                    <div class="user-profy">
+                                        <img src="{{data.profile.url}}" alt="" style="border-radius: 50%; height: 50px; width: 50px;">
+                                        <h3>{{data.name}}</h3>
+                                        <span>{{data.bio}}</span>
+                                        <a href="{% url 'view-profile' data.id %}" title="">View Profile</a>
+                                    </div>
+                                   {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="post-popup job_post">
+    <div class="post-project">
+        <h3>Post</h3>
+        <div class="post-project-fields">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="inp-field">
+                            {{form.image}}
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        {{form.caption}}
+                    </div>
+                    <div class="col-lg-12">
+                        <ul>
+                            <li><button class="active" type="submit" value="post">Post</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <a href="#" title=""><i class="la la-times-circle-o"></i></a>
+    </div>
+</div>
+
+{% endblock %}

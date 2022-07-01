@@ -1,0 +1,98 @@
+{% extends 'header.html'%}
+{% load static %}
+{% block content %}
+        <section class="cover-sec">
+            <img src="{% static 'front/images/resources/cover-img.jpg'%}" alt="">
+        </section>
+        <main>
+            <div class="main-section">
+                <div class="container">
+                    <div class="main-section-data">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="main-left-sidebar">
+                                    <div class="user_profile">
+                                        <div class="user-pro-img">
+                                            <img src="{{user.profile.url}}" alt="">
+                                        </div>
+                                        <div class="user_pro_status">
+                                            <ul class="flw-status">
+                                                <li>
+                                                    <span>Following</span>
+                                                    <b>{{following}}</b>
+                                                </li>
+                                                <li>
+                                                    <span>Followers</span>
+                                                    <b>{{followers}}</b>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <form action="{% url 'view-profile' user.id %}" method="post">
+                                            {% csrf_token %}
+					                        <input type="hidden" value="{{user.id}}" name="user" />
+                                            <input type="hidden" value="{{request.user.id}}" name="follower" />
+                                            <button style="background-color: turquoise; border: none; border-radius: 5px; color: #333; /* Dark grey */ padding: 15px 32px">
+                                            {{button_text}}
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="main-ws-sec">
+                                    <div class="user-tab-sec rewivew">
+                                        <h3>{{user.name}}</h3>
+                                        <div class="star-descp">
+                                            <span>{{user.bio}}</span>
+                                            <ul>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star-half-o"></i></li>
+                                            </ul>
+                                            <a href="#" title="">Status</a>
+                                        </div>
+                                    </div>
+                                    <div></div>
+                                    <div class="posts-section scroll" >
+                                        {% for data in post %}
+                                        <div class="post-bar">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="{{data.user.profile.url}}" alt="" style="height: 50px; width: 50px;">
+                                                    <div class="usy-name">
+                                                        <h3>{{data.user.name}}</h3>
+                                                        <span><img src="{% static 'front/images/clock.png'%}" alt="">{{data.created_at}}</span>
+                                                    </div>
+                                                </div>
+                                               
+                                            </div>
+                                           
+                                            <div class="job_descp">
+                                                <h3>{{data.caption}}</h3>
+                                                <img src="{{data.image.url}}" alt="" style="height: 350px; width: 350px;">
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul class="like-com">
+                                                    <li>
+                                                        <a href="/like-post-profile?post_id={{data.id}}"><i class="fas fa-heart"></i> Like</a>
+                                                        <img src="{% static 'front/images/liked-img.png'%}" alt="">
+                                                        <span>{{data.likes}}</span>
+                                                    </li>
+                                                    <li><a href="#" class="com"><i class="fas fa-comment-alt"></i>
+                                                            Comment 15</a></li>
+                                                </ul>
+                                                <a href="#"><i class="fas fa-eye"></i>Views 50</a>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+      
+ {% endblock %}
