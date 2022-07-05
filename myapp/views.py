@@ -143,7 +143,9 @@ def setting(request):
 def profile(request):
     profile = User.objects.get(id =request.user.id)
     post = Post.objects.filter(user = request.user)
-    return render(request,'profile.html',{'profile':profile,'post':post})
+    followers = len(Follower.objects.filter(user=request.user))
+    following = len(Follower.objects.filter(follower=request.user))
+    return render(request,'profile.html',{'profile':profile,'post':post,'followers':followers,'following':following})
 
 
 @login_required(login_url='/')
