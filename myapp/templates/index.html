@@ -75,7 +75,7 @@
                                             <li>
                                                 <a href="#" data-value = "{{data.id}}" class="like" id="like" ><i class="fas fa-heart" ></i> Like</a>
                                                 <img src="{% static 'front/images/liked-img.png'%}" alt="">
-                                                <span>{{data.likes}}</span>
+                                                <span class="likespan">{{data.likes}}</span>
                                                 
                                                 </li>
                                             </li>
@@ -185,11 +185,18 @@
             type: 'GET',
             data: {post_id:post_id},
             success: function(data){
-                $('.result').html(data);                        
+                $('a').on('click', function(e) {
+                e.preventDefault();
+                $('span.likespan').text(data.likes);
+            });
+            //     $('a').on('click', function(e) {
+            //     e.preventDefault();
+            //     $('span.like1').text('unlike');
+            // });                         
             }       
         });
     });
 });
 </script>
 
-{% endblock %}
+{% endblock %}  

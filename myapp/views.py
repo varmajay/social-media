@@ -1,7 +1,7 @@
 import random
 from django.conf import settings
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from myapp.forms import *
@@ -288,20 +288,28 @@ def like_post(request):
     post_id = request.GET.get('post_id')
     # print(post_id)
     post = Post.objects.get(id = post_id)
-    
+
     like_filter = LikePost.objects.filter(post = post, user = user).first()
-    # print(like_filter)
+    print(like_filter)
     if like_filter == None:
         new_like = LikePost.objects.create(post = post, user = user)
+        post_like = Post.objects.get(id = post_id)
         new_like.save()
         post.likes = post.likes+1
         post.save()
-        return redirect('/')
+        data = {
+            "likes":post_like.likes
+        }
+        return JsonResponse(data)
     else:
+        post_like = Post.objects.get(id = post_id)
         like_filter.delete()
         post.likes = post.likes-1
         post.save()
-        return redirect('/')
+        data = {
+            "likes":post_like.likes
+        }
+        return JsonResponse(data)
 
 
 
