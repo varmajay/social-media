@@ -286,11 +286,11 @@ def like_post_profile(request):
 def like_post(request):
     user = request.user
     post_id = request.GET.get('post_id')
-    # print(type(post_id))
+    # print(post_id)
     post = Post.objects.get(id = post_id)
-
+    
     like_filter = LikePost.objects.filter(post = post, user = user).first()
-
+    # print(like_filter)
     if like_filter == None:
         new_like = LikePost.objects.create(post = post, user = user)
         new_like.save()
